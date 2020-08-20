@@ -1,0 +1,22 @@
+{
+  "name": "friend_meetup",
+  "version": "1.0.0",
+  "description": "social network, create posts, add comments, like, follow, etc",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/milenaonmaui/friend_meetup.git"
+  },
+  "author": "Milena Kari",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/milenaonmaui/friend_meetup/issues"
+  },
+  "homepage": "https://github.com/milenaonmaui/friend_meetup#readme",
+  "devDependencies": {
+    "express": "^4.17.1"
+  }
+}
