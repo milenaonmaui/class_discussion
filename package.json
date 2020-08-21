@@ -17,6 +17,12 @@
   },
   "homepage": "https://github.com/milenaonmaui/friend_meetup#readme",
   "devDependencies": {
+    "body-parser": "^1.19.0",
     "express": "^4.17.1"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "mongoose": "^5.10.0",
+    "nodemon": "^2.0.4"
   }
 }
