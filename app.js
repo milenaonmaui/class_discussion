@@ -2,10 +2,11 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const postRoutes = require('./routes/post')
+const authRoutes = require('./routes/auth')
 const dotenv=require('dotenv')
 const bodyParser = require('body-parser')
 const expressValidator = require('express-validator')
-const uuidv1 = require('uuidv1')
+
 dotenv.config()
 //db
 console.log('Attempt to connecto to db ', process.env.MONGO_URI)
@@ -18,10 +19,11 @@ mongoose.connection.on('error', err => {
     console.log(`DB connection error ${err.message}`)
 });
 
-//now router work as middleware. Call it via app.use
+//Middleware
 app.use(bodyParser.json())
 app.use(expressValidator())
 app.use("/", postRoutes)
+app.use("/", authRoutes)
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
