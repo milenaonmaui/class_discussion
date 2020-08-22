@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const postRoutes = require('./routes/post')
 const dotenv=require('dotenv')
 const bodyParser = require('body-parser')
+const expressValidator = require('express-validator')
 dotenv.config()
 //db
 console.log('Attempt to connecto to db ', process.env.MONGO_URI)
@@ -18,6 +19,7 @@ mongoose.connection.on('error', err => {
 
 //now router work as middleware. Call it via app.use
 app.use(bodyParser.json())
+app.use(expressValidator())
 app.use("/", postRoutes)
 
 const port = process.env.PORT || 8080;
