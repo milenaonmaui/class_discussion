@@ -1,5 +1,6 @@
 const Post = require('../models/post')
 const getPosts=(req, res) => {
+    console.log('received request', req.auth)
     const posts = Post.find().select("_id title body")
     .then(((posts) => {
         res.status(200).json({

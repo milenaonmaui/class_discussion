@@ -5,7 +5,7 @@ const { requireSignin} = require('../controllers/auth');
 
 const router = express.Router();
 
-router.get('/', requireSignin, getPosts);
-router.post('/post', validator.createPostValidator, createPost);
+router.get('/',  getPosts);
+router.post('/post', requireSignin, validator.createPostValidator, createPost);
 
 module.exports = router;
