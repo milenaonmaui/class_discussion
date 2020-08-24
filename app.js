@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const mongoose = require('mongoose');
 const postRoutes = require('./routes/post')
 const authRoutes = require('./routes/auth')
+const userRoutes = require('./routes/user')
 const dotenv=require('dotenv')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
@@ -28,6 +29,7 @@ app.use(cookieParser())
 app.use(expressValidator())
 app.use("/", postRoutes)
 app.use("/", authRoutes)
+app.use("/", userRoutes)
 //handle unauthorized error
 app.use(function(err, req, res, next){
     if (err.name === 'UnauthorizedError'){

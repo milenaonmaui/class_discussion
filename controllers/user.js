@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const User = require("../models/user")
 
 exports.userById = (req, res, next, id) => {
@@ -9,6 +10,8 @@ exports.userById = (req, res, next, id) => {
         }
         //if found, create a profile object
         //append to requst with user info
+        req.profile = user;
+        next()
     })
 }
 
@@ -20,4 +23,41 @@ exports.hasAuthorization = (req, res, next) => {
             error: "User is not authorized to access resource"
         })
     }
+}
+
+exports.getAllUsers = (req,res) => {
+    User.find((err,users) => {
+        if(err) {
+            return res.status(400).json({
+                error: err
+            })
+        }
+        res.json({users})
+    }).select("name email updated created")
+}
+
+//profile object has been added to request
+exports.getUser = (req, res) => {
+    //remove hashed_password and salt
+    req.profile.hashed_password = undefined;
+    req.profile.salt = undefined;
+    return res.json(req.profile)
+}
+
+exports.updateUser = (req, res, next) => {
+    //as long as there is userId in the route
+    //the method userById will be executed and there will be req.profile
+    //in the request
+    let user = req.profile;
+    user = _.extend(user, req.body)
+    user.updated = Date.now()
+    user.save((err)=> {
+        if(err) {
+            return res.status(400).json({error: "Error updating user"})
+        }
+        user.hashed_password = undefined;
+        user.salt = undefined;
+        res.json({user})
+
+    })
 }
