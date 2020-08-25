@@ -2,6 +2,7 @@ const _ = require('lodash');
 const User = require("../models/user")
 
 exports.userById = (req, res, next, id) => {
+    console.log("Inside userById method")
     User.findById(id).exec((err, user) => {
         if(err || !user) {
             return res.status(400).json({
