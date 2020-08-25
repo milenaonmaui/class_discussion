@@ -2,16 +2,19 @@ const formidable = require('formidable')
 const Post = require('../models/post')
 //need access to file system
 const fs=require('fs')
+const { openStdin } = require('process')
 
 
 const getPosts=(req, res) => {
-    console.log('received request', req.auth)
-    const posts = Post.find().select("_id title body")
-    .then(((posts) => {
-        res.status(200).json({
-            posts: posts
-        })
-    }))
+   
+    const posts = Post.find()
+        .populate("postedBy", "_id, name")
+        .select("_id title body")
+        .then(((posts) => {
+            res.status(200).json({
+                posts: posts
+            })
+        }))
     .catch(err => console.log(err))
 }
 
@@ -53,7 +56,21 @@ const createPost = (req,res, next) => {
     
 }
 
+const postsByUser = (req, res) => {
+    Post.find({postedBy: req.profile._id})
+        .populate("postedBy", "_id, name")
+        .sort("_created")
+        .exec((err, posts) => {
+            if(err) {
+                return res.status(400).json({
+                    error: err
+                })
+            }
+            res.json(posts)
+        })
+}
 module.exports = {
     getPosts,
-    createPost
+    createPost,
+    postsByUser
 }
