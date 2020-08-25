@@ -69,8 +69,58 @@ const postsByUser = (req, res) => {
             res.json(posts)
         })
 }
+
+//if post id in route execute this method to 
+//find it and add it to the request
+const addPostToRequest = (req, res, next, id) => {
+    Post.findById(id)
+        .populate("postedBy", "id name")
+        .exec((err, post) => {
+            if(err || !post) {
+                return res.status(400).json({
+                    error: err
+                })
+            }
+            //if post found, add to request
+            req.post = post
+            next()
+        })
+}
+
+const isPoster = (req, res, next) => {
+    let isPoster = req.post && req.auth && req.post.postedBy._id == req.auth._id
+    
+    //Debug
+    // console.log("req.post ", req.post)
+    // console.log("req.auth ", req.auth)
+    // console.log("req.post.postedBy._id ", req.post.postedBy._id);
+    // console.log("req.auth._id", req.auth._id)
+    if(!isPoster) {
+        return res.status(403).json({
+            error: "Unauthhorized action!"
+        })
+    }
+    next()
+}
+
+const deletePost = (req, res) => {
+    let post = req.post
+    post.remove((err, post) => {
+        if(err) {
+            return res.status(400).json({
+                error: err
+            })
+        }
+        res.json({
+            message: "Post deleted successfully!"
+        })
+    })
+}
 module.exports = {
     getPosts,
     createPost,
-    postsByUser
+    postsByUser,
+    addPostToRequest,
+    isPoster,
+    deletePost
 }
