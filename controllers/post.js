@@ -1,4 +1,5 @@
 const formidable = require('formidable')
+const _ = require('lodash');
 const Post = require('../models/post')
 //need access to file system
 const fs=require('fs')
@@ -116,11 +117,29 @@ const deletePost = (req, res) => {
         })
     })
 }
+
+const updatePost = (req, res, next) => {
+    //as long as route has postId, req.post will be added
+    let post = req.post
+    //use lodash _.extend(object, update_info) method
+    post = _.extend(post, req.body)
+    post.updated = Date.now()
+    post.save((err) => {
+        if(err){
+            return res.status(400).json({
+                error: err
+            })
+        }
+        res.json(post)
+    })
+}
+
 module.exports = {
     getPosts,
     createPost,
     postsByUser,
     addPostToRequest,
     isPoster,
-    deletePost
+    deletePost,
+    updatePost
 }
