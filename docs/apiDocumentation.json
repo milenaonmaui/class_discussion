@@ -2,7 +2,8 @@
     "/": "API documentation",  
     "/posts": "Get all posts",
     "/signup": "New user sign up",
-    "/signin": "New user sign up"
+    "/signin": "New user sign up",
+    "/posts/:userId": "Get all posts by userId (user must be signed in)"
 
 
 }
